@@ -2,9 +2,21 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Image Board</title>
+    <link rel="stylesheet" href="../style.css">
+
 </head>
 <body>
+    <div id="main-container">
+        <main id="main">
+           <div v-if="images.length > 0" v-for="image in images">
+               <img v-bind:src="image.url" v-bind:alt="image.description"></img>
+               <h3>{{image.title}}</h3>
+           </div> 
+        </main>
+
+    </div>
+    
     <script src="/js/app.js" type="module" crossorigin="use-credentials"></script>
 </body>
 </html>
