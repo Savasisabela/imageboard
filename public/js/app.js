@@ -4,11 +4,15 @@ Vue.createApp({
     data() {
         return {
             images: [],
+            title: "",
+            description: "",
+            username: "",
+            file: null,
         };
     },
 
     mounted: function () {
-        console.log("vue app mounted");
+        console.log("Vue app mounted");
         fetch("/images.json")
             .then((data) => data.json())
             .then((data) => {
@@ -20,7 +24,21 @@ Vue.createApp({
             });
     },
     updated: function () {
-        console.log("vue just updated");
+        console.log("Vue just updated");
     },
-    methods: {},
+    methods: {
+        setFile(e) {
+            this.file = e.target.files[0];
+        },
+        upload() {
+            const formData = new FormData();
+            formData.append("file", this.file);
+            formData.append("title", this.title);
+            formData.append("description", this.description);
+            fetch("/upload", {
+                method: "POST",
+                body: formData,
+            });
+        },
+    },
 }).mount("#main");

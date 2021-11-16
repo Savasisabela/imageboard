@@ -2,8 +2,15 @@
     box-sizing: border-box;
 }
 
+html,
+body,
+#main-container {
+    height: 100%;
+}
+
 body {
     position: relative;
+    display: block;
     margin: 0px;
     height: 100%;
     width: 100%;
@@ -20,13 +27,23 @@ a {
     text-decoration: none;
 }
 
-img {
-    width: 400px;
-    height: 400px;
+.feed {
+    width: 20vw;
+    height: 20vw;
     object-fit: cover;
 }
 
-main {
+#main-container {
+    position: inherit;
+    display: flex;
+    flex-direction: column;
+    margin: 50px;
+}
+
+#images-container {
     display: flex;
     flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+    margin-top: 30px;
 }
