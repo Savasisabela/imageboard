@@ -16,7 +16,7 @@ Vue.createApp({
         fetch("/images.json")
             .then((data) => data.json())
             .then((data) => {
-                console.log("images from server:", data);
+                console.log("images from server GET:", data);
                 this.images = data;
             })
             .catch((err) => {
@@ -34,11 +34,23 @@ Vue.createApp({
             const formData = new FormData();
             formData.append("file", this.file);
             formData.append("title", this.title);
+            formData.append("username", this.username);
             formData.append("description", this.description);
             fetch("/upload", {
                 method: "POST",
                 body: formData,
-            });
+            })
+                .then((data) => data.json())
+                .then((data) => {
+                    console.log("images from server POST:", data);
+                    this.images.unshift(data);
+                })
+                .catch((err) => {
+                    console.log(
+                        "error fetching uploaded images from server:",
+                        err
+                    );
+                });
         },
     },
 }).mount("#main");

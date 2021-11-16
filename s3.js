@@ -1,15 +1,13 @@
-// const aws = require("aws-sdk");
 const aws = require("aws-sdk");
 const { AWS_KEY, AWS_SECRET } = require("./secrets");
-console.log("AWS_KEY:", AWS_KEY);
-console.log("AWS_SECRET:", AWS_SECRET);
+
 const fs = require("fs");
 
 const s3 = new aws.S3({
-    accesKeyId: AWS_KEY,
-    secretAccesKey: AWS_SECRET,
-}); // is an instance of an AWS user _> it's yet another object, eith methods on it. and it will alow us to communicate with AWS S3, i.e.
-console.log("s3:", s3);
+    accessKeyId: AWS_KEY,
+    secretAccessKey: AWS_SECRET,
+}); // is an instance of an AWS user _> it's yet another object, eith methods on it. and it will alow us to communicate with AWS S3
+
 exports.upload = (req, res, next) => {
     if (!req.file) {
         console.log("no file on server");

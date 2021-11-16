@@ -30,16 +30,16 @@ const uploader = multer({
 });
 
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
-    // If nothing went wrong the file is already in the uploads directory
-    // once it's successfully in the cloud, we want to add a new image to the database.
-    // you will want to store the url an image can be accassed at. plus the other three input field values
-    // url we'll need to compose
-    // username, title and description we'll get form the req.body
-    // once we've added all info to the database, we want to send back the newly uploaded image
     if (req.file) {
-        res.json({
-            success: true,
-        });
+        const { username, title, description } = req.body;
+        console.log("username:", username);
+        console.log("title:", title);
+        console.log("description:", description);
+        const url = `https://s3.amazonaws.com/spicedling/${req.file.filename}`;
+        console.log("url:", url);
+        db.addImages({ username, title, description, url })
+            .then(({ rows }) => res.json(rows[0]))
+            .catch((err) => console.log("error on addImages:", err));
     } else {
         res.json({
             success: false,

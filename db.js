@@ -15,3 +15,11 @@ exports.getImages = () => {
                 ORDER BY id DESC`;
     return db.query(q);
 };
+
+exports.addImages = ({ description, username, title, url }) => {
+    const q = `INSERT INTO images (description, username, title, url)
+                VALUES($1, $2, $3, $4)
+                RETURNING *`;
+    const params = [description, username, title, url];
+    return db.query(q, params);
+};
