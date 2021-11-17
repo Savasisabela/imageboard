@@ -24,11 +24,12 @@
                </div>
                <div id="images-container">
                    <div v-if="images.length > 0" v-for="image in images">
-                       <img class="feed" :src="image.url" :alt="image.title"></img>
+                       <img @click="setId" :id="image.id" class="feed" :src="image.url" :alt="image.title"></img>
                        <h3>{{image.title}}</h3>
-                   </div> 
-    
-               </div>
+                    </div>                     
+                </div>
+
+                <image-modal @close="closeModal" v-if='id' :id="id"></image-modal>
 
             </div>
            

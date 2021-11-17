@@ -32,11 +32,7 @@ const uploader = multer({
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     if (req.file) {
         const { username, title, description } = req.body;
-        console.log("username:", username);
-        console.log("title:", title);
-        console.log("description:", description);
         const url = `https://s3.amazonaws.com/spicedling/${req.file.filename}`;
-        console.log("url:", url);
         db.addImages({ username, title, description, url })
             .then(({ rows }) => res.json(rows[0]))
             .catch((err) => console.log("error on addImages:", err));
@@ -54,6 +50,18 @@ app.get("/images.json", (req, res) => {
         })
         .catch((err) => {
             console.log("error sending images to client: ", err);
+            return res.sendStatus(500);
+        });
+});
+
+app.get("/image/:id", (req, res) => {
+    const { id } = req.params;
+    db.getImageById(id)
+        .then(({ rows }) => {
+            return res.json(rows[0]);
+        })
+        .catch((err) => {
+            console.log("error sending current image to client", err);
             return res.sendStatus(500);
         });
 });

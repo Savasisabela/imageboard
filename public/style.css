@@ -4,23 +4,10 @@
 
 html,
 body,
+main,
 #main-container {
     height: 100%;
-}
-
-body {
-    position: relative;
-    display: block;
     margin: 0px;
-    height: 100%;
-    width: 100%;
-}
-
-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
 }
 
 a {
@@ -47,4 +34,51 @@ a {
     width: 100%;
     margin-top: 30px;
     flex-wrap: wrap;
+}
+
+#popup-bg {
+    overflow-y: hidden;
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.6);
+
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-items {
+    z-index: 1;
+    background-color: darkcyan;
+    width: 80%;
+    height: 80%;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-between;
+}
+
+.popup-img {
+    height: 100%;
+}
+
+.popup-img img {
+    margin: 20px;
+    max-height: 80%;
+    max-width: 80%;
+}
+
+.popup-right {
+    display: flex;
+    flex-direction: column;
+    justify-self: flex-end;
+    margin: 20px;
+}
+
+.popup-btn {
+    align-self: flex-end;
 }

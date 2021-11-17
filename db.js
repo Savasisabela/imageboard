@@ -23,3 +23,10 @@ exports.addImages = ({ description, username, title, url }) => {
     const params = [description, username, title, url];
     return db.query(q, params);
 };
+
+exports.getImageById = (id) => {
+    const q = `SELECT * FROM images
+                WHERE id = $1`;
+    const params = [id];
+    return db.query(q, params);
+};

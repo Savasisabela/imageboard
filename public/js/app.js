@@ -1,14 +1,20 @@
 import * as Vue from "./vue.js";
+import modal from "./modal.js";
 
 Vue.createApp({
     data() {
         return {
             images: [],
+            id: null,
             title: "",
             description: "",
             username: "",
             file: null,
         };
+    },
+
+    components: {
+        "image-modal": modal,
     },
 
     mounted: function () {
@@ -23,13 +29,17 @@ Vue.createApp({
                 console.log("error fetching images from server:", err);
             });
     },
+
     updated: function () {
         console.log("Vue just updated");
     },
+
     methods: {
         setFile(e) {
             this.file = e.target.files[0];
+            console.log("this.file:", this.file);
         },
+
         upload() {
             const formData = new FormData();
             formData.append("file", this.file);
@@ -51,6 +61,16 @@ Vue.createApp({
                         err
                     );
                 });
+        },
+
+        setId(e) {
+            const id = e.target.id;
+            this.id = id;
+            console.log("this.id:", this.id);
+        },
+
+        closeModal() {
+            this.id = null;
         },
     },
 }).mount("#main");
