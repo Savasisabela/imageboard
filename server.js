@@ -66,6 +66,38 @@ app.get("/image/:id", (req, res) => {
         });
 });
 
+app.get("/getmore/:id", (req, res) => {
+    const { id } = req.params;
+    db.getMoreImgs(id)
+        .then(({ rows }) => {
+            return res.json(rows);
+        })
+        .catch((err) => {
+            console.log("error sending images to client: ", err);
+            return res.sendStatus(500);
+        });
+});
+
+app.get("/comments/:id", (req, res) => {
+    const { id } = req.params;
+    db.getComments(id)
+        .then(({ rows }) => {
+            return res.json(rows[0]);
+        })
+        .catch((err) => {
+            console.log("error sending comments to client: ", err);
+            return res.sendStatus(500);
+        });
+});
+
+app.post("/comments.json", (req, res) => {
+    const { commentText, username, imageId } = req.body;
+
+    db.addComments({ commentText, username, imageId })
+        .then(({ rows }) => res.json(rows[0]))
+        .catch((err) => console.log("error on addComments:", err));
+});
+
 app.get("*", (req, res) => {
     res.sendFile(`${__dirname}/index.html`);
 }); // sends over index.html

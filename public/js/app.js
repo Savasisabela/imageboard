@@ -10,6 +10,7 @@ Vue.createApp({
             description: "",
             username: "",
             file: null,
+            moreBtn: true,
         };
     },
 
@@ -22,7 +23,6 @@ Vue.createApp({
         fetch("/images.json")
             .then((data) => data.json())
             .then((data) => {
-                console.log("images from server GET:", data);
                 this.images = data;
             })
             .catch((err) => {
@@ -52,7 +52,6 @@ Vue.createApp({
             })
                 .then((data) => data.json())
                 .then((data) => {
-                    console.log("images from server POST:", data);
                     this.images.unshift(data);
                 })
                 .catch((err) => {
@@ -66,11 +65,28 @@ Vue.createApp({
         setId(e) {
             const id = e.target.id;
             this.id = id;
-            console.log("this.id:", this.id);
         },
 
         closeModal() {
             this.id = null;
+        },
+
+        loadMore() {
+            const lowestId = this.images[this.images.length - 1].id;
+            fetch(`/getmore/${lowestId}`)
+                .then((data) => data.json())
+                .then((data) => {
+                    data.forEach((image) => {
+                        if (image.id != lowestId) {
+                            this.images.push(image);
+                        } else {
+                            this.moreBtn = null;
+                        }
+                    });
+                })
+                .catch((err) => {
+                    console.log("error fetching more images from server:", err);
+                });
         },
     },
 }).mount("#main");

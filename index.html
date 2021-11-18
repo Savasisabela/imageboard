@@ -29,6 +29,14 @@
                     </div>                     
                 </div>
 
+                <div v-if="moreBtn" :id="moreBtn">
+                    <button @click="loadMore">more</button>
+                </div>
+
+                <div id="top-btn">
+                    <button>back to top</button>
+                </div>
+
                 <image-modal @close="closeModal" v-if='id' :id="id"></image-modal>
 
             </div>

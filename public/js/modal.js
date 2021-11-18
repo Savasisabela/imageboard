@@ -1,3 +1,5 @@
+import comments from "./comments.js";
+
 const modal = {
     data() {
         return {
@@ -17,8 +19,11 @@ const modal = {
 
     props: ["id"],
 
+    components: {
+        "comment-session": comments,
+    },
+
     mounted: function () {
-        console.log("modal was mounted", this.id);
         fetch(`/image/${this.id}`)
             .then((data) => data.json())
             .then((data) => {
@@ -55,6 +60,8 @@ const modal = {
                     <div class="popup-time">
                         <p>{{username}} - {{timestamp}}</p>
                     </div>
+
+                    <comment-session v-if='id' :id="id"></comment-session>
                 </div>
             </div>
         </div>
@@ -62,7 +69,6 @@ const modal = {
 
     methods: {
         click() {
-            console.log("clicked component close button");
             this.$emit("close");
         },
     },
