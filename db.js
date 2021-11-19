@@ -34,7 +34,9 @@ exports.addComments = ({ commentText, username, imageId }) => {
 };
 
 exports.getImageById = (id) => {
-    const q = `SELECT * FROM images
+    const q = `SELECT url, username, title, description,
+                TO_CHAR(created_at, 'DD.MM.YY, HH24:MI') created_at 
+                FROM images
                 WHERE id = $1`;
     const params = [id];
     return db.query(q, params);
@@ -54,8 +56,15 @@ exports.getMoreImgs = (id) => {
 };
 
 exports.getComments = (id) => {
-    const q = `SELECT * FROM comments
+    const q = `SELECT comment_text, username,
+                TO_CHAR(created_at, 'DD.MM.YY, HH24:MI') created_at
+                FROM comments
                 WHERE image_id = $1`;
     const params = [id];
     return db.query(q, params);
+};
+
+exports.getAllImgIds = () => {
+    const q = `SELECT id FROM images`;
+    return db.query(q);
 };

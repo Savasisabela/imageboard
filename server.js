@@ -58,11 +58,12 @@ app.get("/image/:id", (req, res) => {
     const { id } = req.params;
     db.getImageById(id)
         .then(({ rows }) => {
-            return res.json(rows[0]);
+            return res.json(rows[0] || null);
         })
         .catch((err) => {
             console.log("error sending current image to client", err);
-            return res.sendStatus(500);
+            // return res.sendStatus(404);
+            res.json(null);
         });
 });
 
@@ -82,7 +83,7 @@ app.get("/comments/:id", (req, res) => {
     const { id } = req.params;
     db.getComments(id)
         .then(({ rows }) => {
-            return res.json(rows[0]);
+            return res.json(rows.reverse());
         })
         .catch((err) => {
             console.log("error sending comments to client: ", err);
@@ -99,7 +100,7 @@ app.post("/comments.json", (req, res) => {
 });
 
 app.get("*", (req, res) => {
-    res.sendFile(`${__dirname}/index.html`);
+    return res.sendFile(`${__dirname}/index.html`);
 }); // sends over index.html
 
 app.listen(8080, () => console.log(`I'm listening.`));
