@@ -10,6 +10,11 @@
     
         <main id="main">
             <div id="main-container">
+                <div class="header">
+                    <header>
+                        <h1>Upload your art here!</h1>
+                    </header>
+                </div>
                 <div id="file-upload">
                     <div class="file-inputs">
                         <input v-model="title" name="title" placeholder="title">
@@ -25,6 +30,9 @@
                         @change="setFile"
                         >
                         <button @click="upload">Upload</button>
+                        <div v-if='bigFile' :id="bigFile" class="big-file">
+                            <p><strong>File too big, please try again.</strong></p>
+                        </div>
 
                     </div>
                </div>
@@ -43,13 +51,13 @@
                     <button>back to top</button>
                 </div> -->
 
-                <image-modal @close="closeModal" v-if='id' :id="id"></image-modal>
+                <image-modal @change="changeId" @close="closeModal" @redirect="redirectModal" v-if='id' :id="id"></image-modal>
 
             </div>
            
         </main>
 
-    </div>
+
     
     <script src="/js/app.js" type="module" crossorigin="use-credentials"></script>
     <script src="/index.js"></script>

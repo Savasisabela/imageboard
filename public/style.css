@@ -7,15 +7,17 @@
     color: #8a2387;
 }
 
-html,
 body,
 main,
 #main-container {
     height: 100%;
     margin: 0px;
+    position: relative;
 }
 
 body {
+    min-height: 100vh;
+    padding-bottom: 50px;
     background-color: #8ec5fc;
     background-image: linear-gradient(62deg, #8ec5fc 0%, #e0c3fc 50%);
 }
@@ -27,6 +29,17 @@ a {
 img {
     border-radius: 5px;
     box-shadow: 3px 15px 8px -10px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-shadow: #0f87ff 1px 0 10px;
+    justify-self: center;
+}
+
+header {
+    text-align: center;
 }
 
 button {
@@ -52,8 +65,8 @@ button:active {
 }
 
 .feed {
-    width: 20vw;
-    height: 20vw;
+    width: 30vw;
+    height: 30vw;
     object-fit: cover;
 }
 
@@ -61,7 +74,6 @@ button:active {
     position: inherit;
     display: flex;
     flex-direction: column;
-    margin: 50px;
 }
 
 .more-button {
@@ -83,6 +95,11 @@ button:active {
     width: 100%;
     align-items: center;
     padding: 5px;
+}
+
+.big-file {
+    color: red;
+    text-align: end;
 }
 
 .file-inputs,
@@ -285,6 +302,51 @@ input {
 
 .popup-submitbtn {
     margin-top: 13px;
+}
+
+/* =================================================== */
+
+.right-btn button,
+.left-btn button {
+    -webkit-appearance: none;
+    background: transparent;
+    border: 0;
+    outline: 0;
+}
+
+svg {
+    padding: 5px;
+}
+
+.arrow {
+    cursor: pointer;
+    top: 50%;
+    width: 70px;
+    height: 90px;
+}
+
+.left:hover polyline,
+.left:focus polyline {
+    stroke-width: 3;
+}
+
+.left:active polyline {
+    stroke-width: 6;
+    transition: all 100ms ease-in-out;
+}
+
+.right:hover polyline,
+.right:focus polyline {
+    stroke-width: 3;
+}
+
+.right:active polyline {
+    stroke-width: 6;
+    transition: all 100ms ease-in-out;
+}
+
+polyline {
+    transition: all 250ms ease-in-out;
 }
 
 @keyframes press {

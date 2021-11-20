@@ -35,7 +35,13 @@ exports.addComments = ({ commentText, username, imageId }) => {
 
 exports.getImageById = (id) => {
     const q = `SELECT url, username, title, description,
-                TO_CHAR(created_at, 'DD.MM.YY, HH24:MI') created_at 
+                TO_CHAR(created_at, 'DD.MM.YY, HH24:MI') created_at, (
+                    SELECT MAX(id) FROM images
+                    WHERE id < $1
+                    LIMIT 1) AS "prevId",(
+                    SELECT MIN(id) FROM images
+                    WHERE id > $1
+                    ) AS "nextId"
                 FROM images
                 WHERE id = $1`;
     const params = [id];

@@ -11,6 +11,14 @@ const uidSafe = require("uid-safe");
 const path = require("path");
 const s3 = require("./s3");
 
+const fileSizeLimitErrorHandler = (err, req, res, next) => {
+    if (err) {
+        return res.json({ fileTooBig: true });
+    } else {
+        next();
+    }
+};
+
 const diskStorage = multer.diskStorage({
     destination: function (req, file, callback) {
         callback(null, __dirname + "/uploads");
@@ -29,19 +37,26 @@ const uploader = multer({
     },
 });
 
-app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
-    if (req.file) {
-        const { username, title, description } = req.body;
-        const url = `https://s3.amazonaws.com/spicedling/${req.file.filename}`;
-        db.addImages({ username, title, description, url })
-            .then(({ rows }) => res.json(rows[0]))
-            .catch((err) => console.log("error on addImages:", err));
-    } else {
-        res.json({
-            success: false,
-        });
+app.post(
+    "/upload",
+    uploader.single("file"),
+    fileSizeLimitErrorHandler,
+    s3.upload,
+    (req, res) => {
+        console.log("fileSizeLimitErrorHandler", fileSizeLimitErrorHandler);
+        if (req.file) {
+            const { username, title, description } = req.body;
+            const url = `https://s3.amazonaws.com/spicedling/${req.file.filename}`;
+            db.addImages({ username, title, description, url })
+                .then(({ rows }) => res.json(rows[0]))
+                .catch((err) => console.log("error on addImages:", err));
+        } else {
+            res.json({
+                success: false,
+            });
+        }
     }
-});
+);
 
 app.get("/images.json", (req, res) => {
     db.getImages()
@@ -62,7 +77,6 @@ app.get("/image/:id", (req, res) => {
         })
         .catch((err) => {
             console.log("error sending current image to client", err);
-            // return res.sendStatus(404);
             res.json(null);
         });
 });
