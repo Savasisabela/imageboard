@@ -51,7 +51,7 @@
                     <button>back to top</button>
                 </div> -->
 
-                <image-modal @change="changeId" @close="closeModal" @redirect="redirectModal" v-if='id' :id="id"></image-modal>
+                <image-modal @change.self="changeId" @close="closeModal" @redirect="redirectModal" v-if='id' :id="id"></image-modal>
 
             </div>
            

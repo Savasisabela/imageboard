@@ -106,9 +106,9 @@ app.get("/comments/:id", (req, res) => {
 });
 
 app.post("/comments.json", (req, res) => {
-    const { commentText, username, imageId } = req.body;
+    const { commentText, username, imageId, gifUrl } = req.body;
 
-    db.addComments({ commentText, username, imageId })
+    db.addComments({ commentText, username, imageId, gifUrl })
         .then(({ rows }) => res.json(rows[0]))
         .catch((err) => console.log("error on addComments:", err));
 });

@@ -255,15 +255,18 @@ button:active {
     padding: 20px;
 }
 
+.results-box::-webkit-scrollbar,
 .popup-cmtsession::-webkit-scrollbar {
     width: 10px;
     height: 200px;
 }
 
+.results-box::-webkit-scrollbar-track,
 .popup-cmtsession::-webkit-scrollbar-track {
     background: #ecf5ff;
 }
 
+.results-box::-webkit-scrollbar-thumb,
 .popup-cmtsession::-webkit-scrollbar-thumb {
     background-color: #e0c3fc;
     border-radius: 20px;
@@ -302,6 +305,25 @@ input {
 
 .popup-submitbtn {
     margin-top: 13px;
+}
+
+.results-box {
+    position: absolute;
+    right: 100px;
+    bottom: 150px;
+    height: 300px;
+    width: 300px;
+    border-radius: 5px;
+    border: 1px solid #eedbff;
+    box-shadow: 1px 1px 1px #b7d7f7;
+    background-color: #e0c3fc;
+    display: flex;
+    overflow-y: scroll;
+    flex-wrap: wrap;
+}
+
+.gifs {
+    cursor: pointer;
 }
 
 /* =================================================== */

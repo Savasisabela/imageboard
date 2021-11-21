@@ -25,11 +25,11 @@ exports.addImages = ({ description, username, title, url }) => {
     return db.query(q, params);
 };
 
-exports.addComments = ({ commentText, username, imageId }) => {
-    const q = `INSERT INTO comments (comment_text, username, image_id)
-                VALUES($1, $2, $3)
+exports.addComments = ({ commentText, username, imageId, gifUrl }) => {
+    const q = `INSERT INTO comments (comment_text, username, image_id, gif_url)
+                VALUES($1, $2, $3, $4)
                 RETURNING *`;
-    const params = [commentText, username, imageId];
+    const params = [commentText, username, imageId, gifUrl];
     return db.query(q, params);
 };
 
@@ -62,7 +62,7 @@ exports.getMoreImgs = (id) => {
 };
 
 exports.getComments = (id) => {
-    const q = `SELECT comment_text, username,
+    const q = `SELECT comment_text, username, gif_url,
                 TO_CHAR(created_at, 'DD.MM.YY, HH24:MI') created_at
                 FROM comments
                 WHERE image_id = $1`;

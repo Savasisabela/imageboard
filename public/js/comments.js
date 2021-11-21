@@ -1,20 +1,27 @@
+import gifs from "./gifsearch.js";
+
 const comments = {
     data() {
         return {
             allComments: [],
             username: "",
             commentText: "",
+            gifUrl: "",
         };
     },
 
     props: ["id"],
 
+    components: {
+        "gif-search": gifs,
+    },
+
     mounted: function () {
         fetch(`/comments/${this.id}`)
             .then((data) => data.json())
             .then((data) => {
-                console.log("data from comments received", data);
                 this.allComments = data;
+                console.log("COMMENTS DATA", data);
             })
             .catch((err) => {
                 console.log("error fetching comments from server:", err);
@@ -30,6 +37,7 @@ const comments = {
                 <p class="comment">
                     {{comment["comment_text"]}}
                 </p>
+                <img :src="comment['gif_url']">
                
                 <p class="date">{{comment["created_at"]}}</p>
                 <hr>
@@ -50,6 +58,7 @@ const comments = {
                     
                 </textarea>
             </div>
+            <gif-search @setgif="addGif"></gif-search>
             <div class="popup-submitbtn">
                 <button @click="submit">Submit</button>
             </div>
@@ -64,10 +73,11 @@ const comments = {
                 imageId: this.id,
                 username: this.username,
                 commentText: this.commentText,
+                gifUrl: this.gifUrl,
             };
-
+            console.log("data before stringify", commentsData);
             const stringCommentsData = JSON.stringify(commentsData);
-
+            console.log("data after stringify", stringCommentsData);
             fetch("/comments.json", {
                 method: "POST",
                 body: stringCommentsData,
@@ -77,7 +87,6 @@ const comments = {
             })
                 .then((data) => data.json())
                 .then((data) => {
-                    console.log("comments from server POST:", data);
                     this.allComments.unshift(data);
                 })
                 .then(() => {
@@ -87,6 +96,10 @@ const comments = {
                 .catch((err) => {
                     console.log("error fetching comments from server:", err);
                 });
+        },
+
+        addGif(gif) {
+            this.gifUrl = gif;
         },
     },
 };

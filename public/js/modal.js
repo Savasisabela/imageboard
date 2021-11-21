@@ -3,12 +3,6 @@ import comments from "./comments.js";
 const modal = {
     data() {
         return {
-            // url: "https://media.giphy.com/media/26CaLiM6RSxSwFwOI/giphy.gif",
-            // title: "Good Job!",
-            // description: "You are doing great, sweetie",
-            // username: "God",
-            // timestamp: "at some point in time",
-
             url: "",
             title: "",
             description: "",
@@ -75,6 +69,7 @@ const modal = {
                         <button @click="click">Close</button>
                     </div>                
                     <comment-session v-if='id' :id="id"></comment-session>
+                    
                 </div>
             </div>
                 <div class="right-btn">
@@ -102,23 +97,22 @@ const modal = {
 
     watch: {
         id(newId, oldId) {
-            this.getImage(newId);
+            console.log("newId", newId);
+            console.log("oldId", oldId);
+
+            if (newId != oldId && !isNaN(newId)) {
+                this.getImage(newId);
+            }
         },
     },
 
     methods: {
-        getImage(id) {
-            fetch(`/image/${id}`)
+        getImage(myId) {
+            fetch(`/image/${myId}`)
+                .then((data) => data.json())
                 .then((data) => {
-                    console.log("data before json:", data.body);
-                    return data.json();
-                })
-                .then((data) => {
-                    console.log("data after json:", data);
                     if (data) {
-                        console.log("next img id:", data.prevId);
                         this.next = data.prevId;
-                        console.log("prev img id:", data.nextId);
                         this.prev = data.nextId;
                         this.url = data.url;
                         this.title = data.title;
@@ -126,7 +120,6 @@ const modal = {
                         this.username = data.username;
                         this.timestamp = data["created_at"];
                     } else {
-                        console.log("THERE IS NOOOO DATA");
                         this.$emit("redirect");
                     }
                 })

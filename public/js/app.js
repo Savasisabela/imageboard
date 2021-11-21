@@ -32,7 +32,6 @@ Vue.createApp({
             });
 
         addEventListener("popstate", (e) => {
-            // console.log(location.pathname, e.state);
             this.id = location.pathname.slice(1);
         });
     },
@@ -58,12 +57,10 @@ Vue.createApp({
                 body: formData,
             })
                 .then((data) => {
-                    console.log("data received ater post:", data);
                     return data.json();
                 })
                 .then((data) => {
                     if (data.fileTooBig) {
-                        console.log("data.fileTooBig", data.fileTooBig);
                         this.bigFile = true;
                     } else {
                         this.images.unshift(data);
@@ -80,13 +77,20 @@ Vue.createApp({
 
         setId(e) {
             const id = e.target.id;
+
             this.id = id;
-            history.pushState({}, "", `/${id}`);
+
+            if (!isNaN(id)) {
+                history.pushState({}, "", `/${id}`);
+            }
         },
 
         changeId(newId) {
             let id = (this.id = newId);
-            history.pushState({}, "", `/${id}`);
+            console.log("ID ON CHANGEID APP.JS", id);
+            if (!isNaN(id)) {
+                history.pushState({}, "", `/${id}`);
+            }
         },
 
         closeModal() {
@@ -104,7 +108,6 @@ Vue.createApp({
             fetch(`/getmore/${lowestId}`)
                 .then((data) => data.json())
                 .then((data) => {
-                    console.log("dataaaaaa:", data);
                     data.forEach((image) => {
                         if (image.id != lowestId) {
                             this.images.push(image);
@@ -112,11 +115,9 @@ Vue.createApp({
                     });
                     let dataLowestId = data[0].lowestId;
                     let newLowestId = this.images[this.images.length - 1].id;
-                    console.log("newLowestId", newLowestId);
                     if (dataLowestId === newLowestId) {
                         this.moreBtn = false;
                     }
-                    console.log("moreBtn:", this.moreBtn);
                 })
                 .catch((err) => {
                     console.log("error fetching more images from server:", err);
