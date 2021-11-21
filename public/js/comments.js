@@ -12,20 +12,23 @@ const comments = {
 
     props: ["id"],
 
+    watch: {
+        id(newId, oldId) {
+            console.log("newId", newId);
+            console.log("oldId", oldId);
+
+            if (newId != oldId && !isNaN(newId)) {
+                this.fetchComments(newId);
+            }
+        },
+    },
+
     components: {
         "gif-search": gifs,
     },
 
     mounted: function () {
-        fetch(`/comments/${this.id}`)
-            .then((data) => data.json())
-            .then((data) => {
-                this.allComments = data;
-                console.log("COMMENTS DATA", data);
-            })
-            .catch((err) => {
-                console.log("error fetching comments from server:", err);
-            });
+        this.fetchComments(this.id);
     },
 
     template: `
@@ -68,6 +71,18 @@ const comments = {
     `,
 
     methods: {
+        fetchComments(myId) {
+            fetch(`/comments/${myId}`)
+                .then((data) => data.json())
+                .then((data) => {
+                    this.allComments = data;
+                    console.log("COMMENTS DATA", data);
+                })
+                .catch((err) => {
+                    console.log("error fetching comments from server:", err);
+                });
+        },
+
         submit() {
             const commentsData = {
                 imageId: this.id,
@@ -92,6 +107,7 @@ const comments = {
                 .then(() => {
                     this.username = "";
                     this.commentText = "";
+                    this.gifUrl = "";
                 })
                 .catch((err) => {
                     console.log("error fetching comments from server:", err);

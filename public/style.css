@@ -279,9 +279,10 @@ button:active {
 
 .popup-comment,
 .popup-comment textarea {
-    width: 100%;
-    height: 100px;
+    width: 80%;
+    height: 50px;
     margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .popup-comment textarea,
@@ -297,6 +298,7 @@ input {
 .date,
 .author {
     font-size: 16px;
+    margin: 0px 0px;
 }
 
 .date {
@@ -307,12 +309,16 @@ input {
     margin-top: 13px;
 }
 
+.gifs-search {
+    margin-top: 15px;
+}
+
 .results-box {
     position: absolute;
-    right: 100px;
-    bottom: 150px;
+    right: 80px;
+    bottom: 180px;
     height: 300px;
-    width: 300px;
+    width: 450px;
     border-radius: 5px;
     border: 1px solid #eedbff;
     box-shadow: 1px 1px 1px #b7d7f7;
