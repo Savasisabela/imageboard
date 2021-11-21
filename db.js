@@ -28,7 +28,8 @@ exports.addImages = ({ description, username, title, url }) => {
 exports.addComments = ({ commentText, username, imageId, gifUrl }) => {
     const q = `INSERT INTO comments (comment_text, username, image_id, gif_url)
                 VALUES($1, $2, $3, $4)
-                RETURNING *`;
+                RETURNING comment_text, username, gif_url, image_id, id,
+                TO_CHAR(created_at, 'DD.MM.YY, HH24:MI') created_at`;
     const params = [commentText, username, imageId, gifUrl];
     return db.query(q, params);
 };
@@ -62,7 +63,7 @@ exports.getMoreImgs = (id) => {
 };
 
 exports.getComments = (id) => {
-    const q = `SELECT comment_text, username, gif_url,
+    const q = `SELECT comment_text, username, gif_url, id,
                 TO_CHAR(created_at, 'DD.MM.YY, HH24:MI') created_at
                 FROM comments
                 WHERE image_id = $1`;
@@ -73,4 +74,25 @@ exports.getComments = (id) => {
 exports.getAllImgIds = () => {
     const q = `SELECT id FROM images`;
     return db.query(q);
+};
+
+exports.deleteImage = (id) => {
+    const q = `DELETE FROM images
+                WHERE id = $1`;
+    const params = [id];
+    return db.query(q, params);
+};
+
+exports.deleteComment = (id) => {
+    const q = `DELETE FROM comments
+                WHERE id = $1`;
+    const params = [id];
+    return db.query(q, params);
+};
+
+exports.deleteAllComments = (id) => {
+    const q = `DELETE FROM comments
+                WHERE image_id = $1`;
+    const params = [id];
+    return db.query(q, params);
 };

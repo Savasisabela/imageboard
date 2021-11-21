@@ -17,9 +17,9 @@
                 </div>
                 <div id="file-upload">
                     <div class="file-inputs">
-                        <input v-model="title" name="title" placeholder="title">
-                        <input v-model="username" name="username" placeholder="username">
-                        <input v-model="description" name="description" placeholder="description">
+                        <input v-model="title" ref="title" name="title" placeholder="title">
+                        <input v-model="username" ref="username" name="username" placeholder="username">
+                        <input v-model="description" ref="description" name="description" placeholder="description">
 
                     </div>
                     <div class="file-submit">
@@ -39,7 +39,10 @@
                <div id="images-container">
                    <div v-if="images.length > 0" v-for="image in images">
                        <img @click="setId" :id="image.id" class="feed" :src="image.url" :alt="image.title"></img>
-                       <h3>{{image.title}}</h3>
+                       <div class="image-title">
+
+                           <h3>{{image.title}}</h3>
+                       </div>
                     </div>                     
                 </div>
 
@@ -51,7 +54,7 @@
                     <button>back to top</button>
                 </div> -->
 
-                <image-modal @change.self="changeId" @close="closeModal" @redirect="redirectModal" v-if='id' :id="id"></image-modal>
+                <image-modal @change.self="changeId" @del="delImage" @close="closeModal" @redirect="redirectModal" v-if='id' :id="id"></image-modal>
 
             </div>
            

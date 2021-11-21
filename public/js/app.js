@@ -52,6 +52,7 @@ Vue.createApp({
             formData.append("title", this.title);
             formData.append("username", this.username);
             formData.append("description", this.description);
+
             fetch("/upload", {
                 method: "POST",
                 body: formData,
@@ -64,6 +65,7 @@ Vue.createApp({
                         this.bigFile = true;
                     } else {
                         this.images.unshift(data);
+                        this.bigFile = false;
                     }
                 })
 
@@ -94,8 +96,18 @@ Vue.createApp({
         },
 
         closeModal() {
-            this.id = null;
             history.pushState({}, "", `/`);
+            this.id = null;
+        },
+
+        delImage() {
+            history.pushState({}, "", `/`);
+            for (let i = 0; i < this.images.length; i++) {
+                if (this.id == this.images[i].id) {
+                    this.images.splice(i, 1);
+                }
+            }
+            this.id = null;
         },
 
         redirectModal() {

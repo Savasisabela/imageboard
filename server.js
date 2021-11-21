@@ -105,11 +105,41 @@ app.get("/comments/:id", (req, res) => {
         });
 });
 
+app.get("/delete/:id", (req, res) => {
+    const { id } = req.params;
+    db.deleteAllComments(id)
+        .then(() => {
+            db.deleteImage(id)
+                .then(() => {
+                    console.log("image was deleted");
+                    res.json({
+                        success: true,
+                    });
+                })
+                .catch((err) => console.log("error deleting image", err));
+        })
+        .catch((err) => console.log("error deleting all comments", err));
+});
+
+app.get("/delcom/:id", (req, res) => {
+    const { id } = req.params;
+    db.deleteComment(id)
+        .then(() => {
+            console.log("comment was deleted");
+            res.json({
+                success: true,
+            });
+        })
+        .catch((err) => console.log("error deleting image", err));
+});
+
 app.post("/comments.json", (req, res) => {
     const { commentText, username, imageId, gifUrl } = req.body;
 
     db.addComments({ commentText, username, imageId, gifUrl })
-        .then(({ rows }) => res.json(rows[0]))
+        .then(({ rows }) => {
+            res.json(rows[0]);
+        })
         .catch((err) => console.log("error on addComments:", err));
 });
 

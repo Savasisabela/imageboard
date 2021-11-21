@@ -7,6 +7,7 @@ const comments = {
             username: "",
             commentText: "",
             gifUrl: "",
+            commentId: null,
         };
     },
 
@@ -36,13 +37,14 @@ const comments = {
         
         <div class="popup-cmtsession">
             <div v-if="allComments.length > 0" v-for="comment in allComments">
-                <p class="author"><strong>{{comment.username}}</strong> said:</p>
+                <p class="author"><strong>{{comment.username}}</strong> said: <button @click="delCom" :id="comment.id" class="del-comment">delete comment</button></p>
                 <p class="comment">
                     {{comment["comment_text"]}}
                 </p>
                 <img :src="comment['gif_url']">
                
                 <p class="date">{{comment["created_at"]}}</p>
+                
                 <hr>
             </div>
         </div>
@@ -50,7 +52,7 @@ const comments = {
             <div class="popup-user">
                 <input 
                     v-model="username"
-                    type="text" placeholder="username" 
+                    type="text" placeholder="username" required
                 />
             </div>
             <div class="popup-comment">
@@ -90,9 +92,8 @@ const comments = {
                 commentText: this.commentText,
                 gifUrl: this.gifUrl,
             };
-            console.log("data before stringify", commentsData);
             const stringCommentsData = JSON.stringify(commentsData);
-            console.log("data after stringify", stringCommentsData);
+
             fetch("/comments.json", {
                 method: "POST",
                 body: stringCommentsData,
@@ -102,6 +103,7 @@ const comments = {
             })
                 .then((data) => data.json())
                 .then((data) => {
+                    console.log("comments data on client side", data);
                     this.allComments.unshift(data);
                 })
                 .then(() => {
@@ -116,6 +118,21 @@ const comments = {
 
         addGif(gif) {
             this.gifUrl = gif;
+        },
+
+        delCom(e) {
+            console.log("comment id", e.target.id);
+
+            fetch(`/delcom/${e.target.id}`)
+                .then(() => console.log("comment successfully deleted"))
+                .catch((err) =>
+                    console.log("error deleting comment on client side", err)
+                );
+            for (let i = 0; i < this.allComments.length; i++) {
+                if (e.target.id == this.allComments[i].id) {
+                    this.allComments.splice(this.allComments[i], 1);
+                }
+            }
         },
     },
 };

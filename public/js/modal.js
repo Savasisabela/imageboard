@@ -52,6 +52,7 @@ const modal = {
                             :src="url"
                             :alt="description"
                         />
+                        <button class="del-btn" :id="id" @click="delImg">Delete</button>
                     </div>
                     <div class="popup-title">
                         <h3>{{title}}</h3>
@@ -61,7 +62,8 @@ const modal = {
                     </div>
                     <div class="popup-time">
                         <p>{{username}} - {{timestamp}}</p>
-                    </div>                    
+                    </div>
+                     
 
                 </div>
                 <div class="popup-right">
@@ -146,6 +148,18 @@ const modal = {
             console.log("prev image id", this.prev);
             let newId = this.prev;
             this.$emit("change", newId);
+        },
+
+        delImg() {
+            fetch(`/delete/${this.id}`)
+                .then(() => {
+                    console.log(`image ${this.id} was deleted`);
+                    history.pushState({}, "", `/`);
+                    this.$emit("del");
+                })
+                .catch((err) =>
+                    console.log("error deleting image on client side", err)
+                );
         },
     },
 };
